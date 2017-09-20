@@ -1,13 +1,13 @@
 //get all volumes with tag:Backup with value:true
-var getVolumesToBackup = () => {
+var getVolumesToBackup = (event) => {
   //set params for to grab all volumes with tag:Backup value:true
   var params = {
     DryRun: false,
     Filters: [
       {
-        Name: 'tag:Backup',
+        Name: `tag:${event.BackupTag.tag}`,
         Values: [
-          'true'
+          event.BackupTag.value
         ],
       }
     ]

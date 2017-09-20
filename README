@@ -1,0 +1,15 @@
+//Core setup
+1. Pull repo
+2. use Claudia to push function to Lambda (claudia create --region us-east-1 --handler index.handler)
+3. Create SnapMashal Policy in IAM
+4. Tie SnapMarshal Policy to executor which Claudia made
+
+//Passing event to backup tag:value
+1. Tag each volume with a 'Backup' tag that has the value of 'Schedule'
+2. make an event.json for each 'Schedule' type
+3. test with claudia using 'claudia test-lambda --event ./testing/Event-BackupDaily.json'
+4. Make a CloudWatch Event
+  4a. It should mirror the schedule for your event.json test ('0 22 * * ? *' is 22:00 UTC every day)
+  4b. It should send a constant JSON that matches the text from our event.json
+  4c. Suggested name is something like 'SnapMarshal-Backup-Daily'
+  4d. Suggested Description is like 'Calls SnapMarshal to make a snapshot every 1 day'

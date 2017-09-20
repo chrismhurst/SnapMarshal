@@ -16,9 +16,7 @@ AWS.config.update({region: 'us-east-1'});
 ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
 
 exports.handler = function (event, context) {
-    volCommands.getVolumesToBackup().then((res) => {
-      // return snapshotVolume(res[0].VolumeId);
-      // return asyncSnapshotDriver(res);
+    volCommands.getVolumesToBackup(event).then((res) => {
       return Promise.all(res.map(snapCommands.snapshotVolume));
     }).then((res) => {
       context.succeed(res);

@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/chrismhurst/SnapMarshal/issues"
   },
-  "homepage": "https://github.com/chrismhurst/SnapMarshal#readme"
+  "homepage": "https://github.com/chrismhurst/SnapMarshal#readme",
+  "dependencies": {
+    "aws-sdk": "^2.119.0"
+  }
 }

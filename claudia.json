@@ -1,0 +1,7 @@
+{
+  "lambda": {
+    "role": "snapmarshal-executor",
+    "name": "snapmarshal",
+    "region": "us-east-1"
+  }
+}

@@ -1,0 +1,21 @@
+//Provides SnapMarshal with the permissions it needs to read info from ec2, create and manage snapshots, and publish to SNS topics
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:Describe*",
+                "ec2:CreateSnapshot",
+                "ec2:CreateTags",
+                "ec2:DeleteSnapshot"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "sns:Publish*",
+            "Resource": "arn:aws:sns:us-east-1:457598648171:Backups"
+        }
+    ]
+}

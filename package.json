@@ -1,0 +1,19 @@
+{
+  "name": "snapmarshal",
+  "version": "1.0.0",
+  "description": "Lambda functions for making and managing EC2 Snapshots",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/chrismhurst/SnapMarshal.git"
+  },
+  "author": "Chris Hurst",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/chrismhurst/SnapMarshal/issues"
+  },
+  "homepage": "https://github.com/chrismhurst/SnapMarshal#readme"
+}

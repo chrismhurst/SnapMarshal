@@ -1,6 +1,6 @@
 //Core setup
 1. Pull repo
-2. use Claudia to push function to Lambda (claudia create --region us-east-1 --handler index.handler)
+2. use Claudia to push function to Lambda (claudia create --region us-east-1 --timeout 300 --handler index.handler)
 3. Create SnapMashal Policy in IAM
 4. Tie SnapMarshal Policy to executor which Claudia made
 

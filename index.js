@@ -15,12 +15,20 @@ AWS.config.update({region: 'us-east-1'});
 //create ec2 instance
 ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
 
+//get volumes based on filter passed in custom event
+//.then snapshot and tag all volumes returned
+//.then return successful to Lambda
 exports.handler = function (event, context) {
+  if (event.BackupTag) {
     volCommands.getVolumesToBackup(event).then((res) => {
-      return Promise.all(res.map(snapCommands.snapshotVolume));
+      return Promise.all(res.map(snapCommands.snapshotAndTag));
     }).then((res) => {
       context.succeed(res);
     }).catch((err) => {
       console.log(err);
     });
+  }
+  if (event.RetentionTags) {
+
+  }
 };

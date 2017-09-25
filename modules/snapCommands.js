@@ -1,27 +1,60 @@
 //import util funcitons
 var utils = require('./utils.js');
 
-//snapshot Volume
-var snapshotVolume = (Volume) => {
-  var thisVolumeId = Volume.VolumeId
-  var timeString = utils.getDateTimeString();
-  if (Volume.Attachments[0]) {
-    var volumeInstance =  Volume.Attachments[0].InstanceId
-    var volumeMapping = Volume.Attachments[0].Device
-    var params = {
-      DryRun: false,
-      VolumeId: thisVolumeId,
-      Description: `${thisVolumeId} - attached at ${volumeMapping} on ${volumeInstance} - ${timeString} UTC`
-    };
-  } else {
-    var params = {
-      DryRun: false,
-      VolumeId: thisVolumeId,
-      Description: `${thisVolumeId} - not attached to an instance - ${timeString} UTC`
-    };
-  }
-
+//snapshot the volume, then tag the snapshot
+var snapshotAndTag = (Volume) => {
   return new Promise((resolve, reject) => {
+    snapshotVolume(Volume).then((res) => {
+      var SnapshotId = [res.SnapshotId]
+      var Tags = Volume.Tags
+      return tagResource(SnapshotId, Tags);
+    }).then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      console.log(err);
+    })
+  });
+};
+
+//tag resource
+var tagResource = (ResourceID, Tags) => {
+  return new Promise((resolve, reject) => {
+    var params = {
+      DryRun: false,
+      Resources: ResourceID,
+      Tags: Tags
+    }
+    ec2.createTags(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+//snapshot Volume with a useful description
+var snapshotVolume = (Volume) => {
+  return new Promise((resolve, reject) => {
+    var thisVolumeId = Volume.VolumeId
+    var timeString = utils.getDateTimeString();
+    if (Volume.Attachments[0]) {
+      var volumeInstance =  Volume.Attachments[0].InstanceId
+      var volumeMapping = Volume.Attachments[0].Device
+      var volumeTags = Volume.Tags
+      var params = {
+        DryRun: false,
+        VolumeId: thisVolumeId,
+        Description: `${thisVolumeId} - attached at ${volumeMapping} on ${volumeInstance} - ${timeString} UTC`,
+      };
+    } else {
+      var params = {
+        DryRun: false,
+        VolumeId: thisVolumeId,
+        Description: `${thisVolumeId} - not attached to an instance - ${timeString} UTC`,
+      };
+    }
     ec2.createSnapshot(params, (err, data) => {
       if (err) {
         reject(err);
@@ -32,6 +65,10 @@ var snapshotVolume = (Volume) => {
   });
 };
 
+
+
 module.exports = {
-  snapshotVolume
+  snapshotVolume,
+  tagResource,
+  snapshotAndTag
 };

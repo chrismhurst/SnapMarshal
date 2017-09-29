@@ -1,13 +1,26 @@
 //import util funcitons
 var utils = require('./utils.js');
 
-//snapshot the volume, then tag the snapshot
+//snapshot the volume
+//.then tag the snapshot
+//.then tag the volume with the last backed up tag
+//.then resolve the promise
 var snapshotAndTag = (Volume) => {
   return new Promise((resolve, reject) => {
     snapshotVolume(Volume).then((res) => {
-      var SnapshotId = [res.SnapshotId]
-      var Tags = Volume.Tags
+      var SnapshotId = [res.SnapshotId];
+      var Tags = Volume.Tags;
       return tagResource(SnapshotId, Tags);
+    }).then((res) => {
+      var VolumeId = [Volume.VolumeId];
+      var TimeStamp = utils.getDateTimeString();
+      var Tags = [
+        {
+          "Key": "LastBackupTime",
+          "Value": `${TimeStamp}`
+        }
+      ]
+      return tagResource(VolumeId, Tags);
     }).then((res) => {
       resolve(res);
     }).catch((err) => {

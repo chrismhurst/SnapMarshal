@@ -9,6 +9,9 @@ var volCommands = require('./modules/volCommands.js')
 //import snapshot functions
 var snapCommands = require('./modules/snapCommands.js');
 
+//import feedback functions
+var feedback = require('./modules/feedback.js');
+
 //set region
 AWS.config.update({region: 'us-east-1'});
 
@@ -23,7 +26,7 @@ exports.handler = function (event, context) {
     volCommands.getVolumesToBackup(event).then((res) => {
       return Promise.all(res.map(snapCommands.snapshotAndTag));
     }).then((res) => {
-      context.succeed(res);
+      context.succeed(feedback.feedbackContent);
     }).catch((err) => {
       console.log(err);
     });

@@ -1,16 +1,20 @@
 //import util funcitons
 var utils = require('./utils.js');
 
+//import feedback functions
+var feedback = require('./feedback.js');
+
 //snapshot the volume
 //.then tag the snapshot
-//.then tag the volume with the last backed up tag
+//.then add a result entry to feedback and tag the volume with the last backed up tag
 //.then resolve the promise
 var snapshotAndTag = (Volume) => {
   return new Promise((resolve, reject) => {
     snapshotVolume(Volume).then((res) => {
-      var SnapshotId = [res.SnapshotId];
-      var Tags = Volume.Tags;
-      return tagResource(SnapshotId, Tags);
+      // var SnapshotId = [res.SnapshotId];
+      // var Tags = Volume.Tags;
+      feedback.feedback(Volume.VolumeId, res.SnapshotId, 'Created');
+      return tagResource([res.SnapshotId], Volume.Tags);
     }).then((res) => {
       var VolumeId = [Volume.VolumeId];
       var TimeStamp = utils.getDateTimeString();

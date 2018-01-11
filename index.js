@@ -32,6 +32,10 @@ exports.handler = function (event, context) {
     });
   }
   if (event.RetentionTags) {
-
+    volCommands.getVolumesWithRetentionTags(event).then((res) => {
+      context.succeed(res);
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 };

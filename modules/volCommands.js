@@ -9,7 +9,7 @@ var getVolumesToBackup = (event) => {
           Name: `tag:${event.BackupTag.tag}`,
           Values: [
             event.BackupTag.value
-          ],
+          ]
         }
       ]
     }

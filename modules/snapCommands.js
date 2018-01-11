@@ -84,8 +84,51 @@ var snapshotVolume = (Volume) => {
 
 
 
+//var getVolumeSnaps
+var getSnapshotsByVolume = (Volume) => {
+  return new Promise((resolve, reject) => {
+    var params = {
+      DryRun: false,
+      Filters: [
+        {
+        Name: "volume-id",
+        Values: [
+          Volume.VolumeId
+        ]
+      }
+      ]
+    }
+    ec2.describeSnapshots(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+//var selectVolumeSnapsByDate
+
+//var removeSnapshot
+
+var manageRetainedVolumeSnapshots = (Volume) => {
+  return new Promise((resolve, reject) => {
+    getSnapshotsByVolume(Volume).then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+
+  //select only snaps that actually exceed retention limit
+
+  //remove selected snaps
+};
+
 module.exports = {
   snapshotVolume,
   tagResource,
-  snapshotAndTag
+  snapshotAndTag,
+  manageRetainedVolumeSnapshots
 };

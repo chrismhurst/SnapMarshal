@@ -33,6 +33,8 @@ exports.handler = function (event, context) {
   }
   if (event.RetentionTags) {
     volCommands.getVolumesWithRetentionTags(event).then((res) => {
+      return Promise.all(res.map(snapCommands.manageRetainedVolumeSnapshots))
+    }).then((res) => {
       context.succeed(res);
     }).catch((err) => {
       console.log(err);

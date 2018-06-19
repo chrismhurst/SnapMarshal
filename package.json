@@ -18,5 +18,8 @@
   "homepage": "https://github.com/chrismhurst/SnapMarshal#readme",
   "dependencies": {
     "aws-sdk": "^2.119.0"
+  },
+  "devDependencies": {
+    "claudia": "^5.0.0"
   }
 }
